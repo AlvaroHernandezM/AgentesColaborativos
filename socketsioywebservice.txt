@@ -1,0 +1,12 @@
+https://github.com/crossroads/socket.io-webservice socket.io and webservice
+https://www.pubnub.com/blog/2015-01-05-websockets-vs-rest-api-understanding-the-difference/
+http://stackoverflow.com/questions/6339393/how-can-socket-io-and-restful-work-together
+
+
+https://vexxhost.com/resources/tutorials/mean-socket-io-integration-tutorial/
+https://vexxhost.com/resources/tutorials/getting-started-with-mean-stack/
+https://www.sitepoint.com/build-a-web-app-with-backbone-js-and-socket-io/
+http://4dev.tech/2016/02/creating-a-live-auction-app-with-angular-2-node-js-and-socket-io/
+sin ver
+https://docs.strongloop.com/display/MSG/Building+a+real-time+app+using+socket.io+and+AngularJS
+https://devcenter.heroku.com/articles/node-websockets
