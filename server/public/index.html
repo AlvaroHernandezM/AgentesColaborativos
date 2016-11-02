@@ -1,0 +1,164 @@
+<!DOCTYPE HTML>
+<!--
+	Prologue by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Venta de Entradas</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
+		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
+	</head>
+	<body>
+
+		<!-- Header -->
+			<div id="header">
+
+				<div class="top">
+
+					<!-- Logo -->
+						<div id="logo">
+							<span class="image avatar48"><img src="images/avatar.jpg" alt="" /></span>
+							<h1 id="title">Venta de Entradas</h1>
+							<p>Servidor</p>
+						</div>
+
+					<!-- Nav -->
+						<nav id="nav">
+							<ul>
+								<li><a href="#top" id="top-link" class="skel-layers-ignoreHref"><span class="icon fa-home">Inicio</span></a></li>
+								<li><a href="#portfolio" id="portfolio-link" class="skel-layers-ignoreHref"><span class="icon fa-th">Oferta de Entradas</span></a></li>
+								<li><a href="#about" id="about-link" class="skel-layers-ignoreHref"><span class="icon fa-user">Vendedor</span></a></li>
+							</ul>
+						</nav>
+
+				</div>
+			</div>
+
+		<!-- Main -->
+			<div id="main">
+
+				<!-- Intro -->
+					<section id="top" class="one dark cover">
+						<div class="container">
+
+							<header>
+								<h2 class="alt"> <strong> Bienvenido al Sistema Para Venta de Entradas</strong>.</h2>
+								<h2 class="alt"> <strong> tupase.com</strong></h2>
+								<p>En este sitio puedes adquirir entradas para tus eventos favoritos,<br />
+								encontrarás Teatro, deportes, conciertos, festivales, y muchos más.</p>
+
+							</header>
+
+							<footer>
+								<a href="#portfolio" class="button scrolly">Ver Ofertas</a>
+							</footer>
+
+						</div>
+					</section>
+
+				<!-- Portfolio -->
+					<section id="portfolio" class="two">
+						<div class="container">
+
+							<header>
+								<h2>Oferta De Entradas.</h2>
+							</header>
+
+							<p>Acá encontrarás los eventos que se encuentran disponibles.</p>
+
+							<div class="row">
+								<div class="4u 12u$(mobile)">
+									<article class="item">
+										<a href="#" class="image fit"><img src="images/pic02.jpg" alt="" /></a>
+										<header>
+											<h3>Ipsum Feugiat</h3>
+										</header>
+									</article>
+									<article class="item">
+										<a href="#" class="image fit"><img src="images/pic03.jpg" alt="" /></a>
+										<header>
+											<h3>Rhoncus Semper</h3>
+										</header>
+									</article>
+								</div>								
+							</div>
+
+						</div>
+					</section>
+
+				<!-- About Me -->
+					<section id="about" class="three">
+						<div class="container">
+
+							<header>
+								<h2>Vendedor.</h2>
+							</header>
+
+							<p>Por favor completa el siguiente formulario:</p>
+
+							<form>
+							<center>
+								<div class="6u$ 12u$(mobile)"><input id="name" type="text" name="name" placeholder="Nombre" /></div>
+									<div class="6u$ 12u$(mobile)"><input id="numTickets" type="text" placeholder="Número de boletas" /></div>
+									<div class="6u$ 12u$(mobile)"><input id="price" type="text" placeholder="Valor de boletas" /></div>
+									<div class="6u$ 12u$(mobile)"><input id="typeEvent" type="text" placeholder="Tipo" /></div>
+									<div class="6u$ 12u$(mobile)"><input id="dateEvent" type="text" placeholder="Tiempo restante para comenzar" /></div>
+									<br>
+									<div class="12u$">
+										<input id="submit" type="submit" value="AGREGAR EVENTO" />
+									</div>
+								</div>
+								<div class="row">
+									<div class="12u$">
+										<div id="result">jeje</div>
+									</div>
+								</div>
+							</form>
+								 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+								  <script type="text/javascript">
+								    $(function() {
+								      $('#submit').click(function() {
+								        $.ajax({
+								          url: '/sendagents/' + $('#name').val() + '/'+ $('#numTickets').val() + '/'+ $('#price').val() + '/'+ $('#typeEvent').val() + '/'+ $('#dateEvent').val()
+								        }).done(function( data ) {
+										      $('#result').text(data);
+								        }).fail( function( jqXHR, textStatus, errorThrown ) {
+								            alert('Error enviando: '+ jqXHR+" - "+textStatus+" - "+errorThrown);
+								        });
+								      });
+								    });
+								</script>
+							</center>
+
+
+						</div>
+					</section>	
+			</div>
+
+		<!-- Footer -->
+			<div id="footer">
+
+				<!-- Copyright -->
+					<ul class="copyright">
+						<li>&copy; Inteligencia Artificial.</li><li>Alvaro Hernandez - Larry Portocarrero - Katherine Velandia</li>
+					</ul>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/jquery.scrollzer.min.js"></script>
+			<script src="assets/js/skel.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
