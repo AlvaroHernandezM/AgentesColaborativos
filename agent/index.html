@@ -4,14 +4,15 @@
   <meta charset="UTF-8">
   <title>Aplicación con WebSockets</title>
   <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
-  <script src="main.js"></script>
+  <script src="database.js"></script>
+  <!--<script src="main.js"></script>-->
 </head>  
-<body>  
-  <h1>Información de:</h1>
-
-  
-
-  <div id="messages"></div>  
-  <div id="sendall"></div>
+<body onload="startDB('data');">  
+  <input type="text" id="money" placeholder="Introducir dinero" />
+  <input type="text" id="numSales" placeholder="Introducir numero de ventas" /> 
+  <input type="text" id="timeSale" placeholder="Introducir tiempo de venta" /> 
+  <input type="text" id="gain" placeholder="Introducir ganacia" /> 
+  <input type="text" id="typeEvent" placeholder="Introducir tipo de evento" /> 
+  <button type="button" onclick="addAgent();">Guardar</button>
 </body>  
 </html>  

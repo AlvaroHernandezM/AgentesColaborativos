@@ -1,44 +1,112 @@
-var socket = io.connect('http://localhost:8080' ,{'forceNew' : true});
+var socket = io.connect('http://'+ ip +':8080' ,{'forceNew' : true});
 
 
 //mensajes quele llegan desde el servidor
-socket.on('welcome', function(data){
-	//console.log(data); //consola del navegador
-	renderOne(data, 'messages');
+socket.on('messages', function(data){
+	console.log(data); //consola del navegador
+	switch (data)
+	{
+		case 'money': sendMoney();
+		break;
+
+		case 'numSales': sendNumSales();
+		break;
+
+		case 'timeSale': sendTimeSale();
+		break;
+
+		case 'gain': sendGain();
+		break;
+
+		case 'typeEvent': sendTypeEvent();
+		break;
+
+		default: sendData('error', 'Peticion desconocida');
+	}
 })
 
-//mensajes quele llegan desde el servidor
-socket.on('money', function(data){
-    //console.log(data); //consola del navegador
-    renderOne(data, 'sendall');
-})
+function sendMoney() {
+	var active = dataBase.result;
+	var data = active.transaction(["agent"], "readonly");
+	var object = data.objectStore("agent");
+	var request = object.get(1);
+	request.onsuccess = function () {
+		var result = request.result;
 
-//renderiza varios
-function render(data) {  
-    var html = data.map(function(elem, index){
-        return(`<div>
-                 <strong>${elem.asunt}</strong>:
-                 <em>${elem.text}</em>
-        </div>`)
-    }).join(" ");
-    document.getElementById('sendall').innerHTML = html;
+		if (result !== undefined) {
+			console.log("Enviando money: " + result.money);
+			sendData('money', result.money);
+		}
+	};
 }
 
-function renderOne(data,element){
-	 var html = `<div>
-                 <strong>${data}</strong>:
-                 <em>${data}</em>
-        </div>`;
-     document.getElementById(element).innerHTML = html;
+function sendNumSales() {
+	var active = dataBase.result;
+	var data = active.transaction(["agent"], "readonly");
+	var object = data.objectStore("agent");
+	var request = object.get(1);
+	request.onsuccess = function () {
+		var result = request.result;
+
+		if (result !== undefined) {
+			console.log("Enviando numSales: " + result.numSales);
+			sendData('numSales', result.numSales);
+		}
+	};
 }
 
-function sendMessage(){
-	var varSend = {
-		asunt: 'Mensaje cliente:',
-		text: 'Soy el cliente respondiendo a partir de lo que llego'
+function sendTimeSale() {
+	var active = dataBase.result;
+	var data = active.transaction(["agent"], "readonly");
+	var object = data.objectStore("agent");
+	var request = object.get(1);
+	request.onsuccess = function () {
+		var result = request.result;
+
+		if (result !== undefined) {
+			console.log("Enviando timeSale: " + result.timeSale);
+			sendData('timeSale', result.timeSale);
+		}
+	};
+}
+
+function sendGain() {
+	var active = dataBase.result;
+	var data = active.transaction(["agent"], "readonly");
+	var object = data.objectStore("agent");
+	var request = object.get(1);
+	request.onsuccess = function () {
+		var result = request.result;
+
+		if (result !== undefined) {
+			console.log("Enviando gain: " + result.gain);
+			sendData('gain', result.gain);
+		}
+	};
+}
+
+function sendTypeEvent() {
+	var active = dataBase.result;
+	var data = active.transaction(["agent"], "readonly");
+	var object = data.objectStore("agent");
+	var request = object.get(1);
+	request.onsuccess = function () {
+		var result = request.result;
+
+		if (result !== undefined) {
+			console.log("Enviando typeEvent: " + result.typeEvent);
+			sendData('typeEvent', result.typeEvent);
+		}
+	};
+}
+
+function sendData(response, value){
+	var data = {
+		response,
+		value
 	};
 
-	socket.emit('reply-message',varSend);
+	socket.emit('reply-message',data);
 	return false;
 }
 
