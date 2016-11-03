@@ -21,7 +21,7 @@ function connectServer(ip) {
 	    console.log(data); //consola del navegador
 	    sendTimeSale(data,socket);
 	})
-
+		
 	socket.on('gain', function(data){
 	    console.log(data); //consola del navegador
 	    sendGain(data,socket);
@@ -31,11 +31,6 @@ function connectServer(ip) {
 	    console.log(data); //consola del navegador
 	    sendTypeEvent(data,socket);
 	})
-
-	socket.on('send', function(data){
-	    console.log('hola');
-	})
-
 }
 
 

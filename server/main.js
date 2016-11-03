@@ -67,6 +67,18 @@ io.on('connection', function(socket){ //cliente que ha mandado el mensaje
 			  	console.log('Se ha actualizado agente con money: '+agent.money);
 			  });
 			  console.log('Que postula al evento: '+data.nameEvent);
+			  Event.findOne({ name: data.nameEvent }, function (err, event){ //obteniendo evento
+			  	if(event.price>agent.money){ //comparando los precios
+			  		agent.state = false;  //cambiando el estado del agente (verificar problemas futuros)
+			  		agent.save(function(err,agent){
+			  			if(err) return console.error(err);
+			  			console.log('Se ha cambiando el estado del agente a '+agent.state+' por la insuficinete cantidad de dienro.');
+			  		});
+			  	} else {
+			  		
+			  	}
+			  });
+
 			});
 		} else if(data.response=='numSales') {
 			console.log('Es sobre numSales: '+data.value);
