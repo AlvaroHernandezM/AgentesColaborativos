@@ -61,12 +61,14 @@ io.on('connection', function(socket){ //cliente que ha mandado el mensaje
 		if(data.response=='money'){
 			console.log('Es sobre dinero: '+data.value);
 			Agent.findOne({ id: idSocket }, function (err, agent){
+			  if(err) return console.error(err);
 			  agent.money = data.value;
 			  agent.save(function(err, agent){
 			  	if(err) return console.error(err);
 			  	console.log('Se ha actualizado agente con money: '+agent.money);
 			  });
 			  console.log('Que postula al evento: '+data.nameEvent);
+			  agent.request = 'money';
 			  Event.findOne({ name: data.nameEvent }, function (err, event){ //obteniendo evento
 			  	if(event.price>agent.money){ //comparando los precios
 			  		agent.state = false;  //cambiando el estado del agente (verificar problemas futuros)
@@ -75,8 +77,44 @@ io.on('connection', function(socket){ //cliente que ha mandado el mensaje
 			  			console.log('Se ha cambiando el estado del agente a '+agent.state+' por la insuficinete cantidad de dienro.');
 			  		});
 			  	} else {
-			  		
+			  		agent.state=true;
+			  		agent.save(function(err,agent){
+			  			if(err) return console.error(err);
+			  			console.log('Se ha cambiando el estado del agente a '+agent.state+' y el reqiest  '+agent.request);
+			  		});			  		
 			  	}
+			  		Agent.find({request:'money'}).exec(function (err, results) {
+			  			if(err) return console.error(err);
+			  			var countRequestMoney;
+			  			var countAgents;
+			  			console.log("money "+results.length);
+			  			countRequestMoney = results.length;
+			  			Agent.find({}).exec(function (err, results1) {
+				  			if(err) return console.error(err);
+				  			console.log("todos "+results1.length);
+				  			countAgents = results1.length;
+				  			if(countAgents==countRequestMoney){
+					  			console.log('ULTIMO');
+					  			Agent.find({state:true}).exec(function (err, results3) {
+						  			if(err) return console.error(err);
+						  			console.log("stado final "+results3.length);
+						  			if(results3.length==1){
+						  				if(results3[0].id == agent.id){
+						  					io.sockets.connected[agent.id].emit('send', event);
+						  					console.log('enviado el eventp '+event.name+' a '+agent.id+' resultado ');
+						  				} else {
+						  					console.log('no hago nada');
+						  				}						  				
+						  			} else {
+						  				console.log('continuando con pregunta tipo evento para el resto');
+						  				io.sockets.connected[agent.id].emit('messages', event);
+						  			}
+								});
+					  		}
+						});
+					});
+			  		
+			  		
 			  });
 
 			});
