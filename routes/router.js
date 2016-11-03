@@ -1,6 +1,6 @@
-module.exports = function(app,io){
+module.exports = function(app,io,Event){
 
-	var Event = require('../models/event')
+	
 
 	app.get('/saludo', function(req, res){
 		res.status(200).send('Hola, soy el servidor nodemon');

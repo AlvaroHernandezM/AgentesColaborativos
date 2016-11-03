@@ -1,29 +1,36 @@
-var socket = io.connect('http://'+ ip +':8080' ,{'forceNew' : true});
+var socket = io.connect('http://localhost:8080' ,{'forceNew' : true});
 
 
 //mensajes quele llegan desde el servidor
 socket.on('messages', function(data){
 	console.log(data); //consola del navegador
-	switch (data)
-	{
-		case 'money': sendMoney();
-		break;
-
-		case 'numSales': sendNumSales();
-		break;
-
-		case 'timeSale': sendTimeSale();
-		break;
-
-		case 'gain': sendGain();
-		break;
-
-		case 'typeEvent': sendTypeEvent();
-		break;
-
-		default: sendData('error', 'Peticion desconocida');
-	}
 })
+
+socket.on('money', function(data){
+    console.log(data); //consola del navegador
+    sendMoney();
+})
+
+socket.on('numSales', function(data){
+    console.log(data); //consola del navegador
+    sendNumSales();
+})
+
+socket.on('timeSale', function(data){
+    console.log(data); //consola del navegador
+    sendTimeSale();
+})
+
+socket.on('gain', function(data){
+    console.log(data); //consola del navegador
+    sendGain();
+})
+
+socket.on('typeEvent', function(data){
+    console.log(data); //consola del navegador
+    sendTypeEvent();
+})
+
 
 function sendMoney() {
 	var active = dataBase.result;
@@ -102,8 +109,8 @@ function sendTypeEvent() {
 
 function sendData(response, value){
 	var data = {
-		response,
-		value
+		response:response,
+		value:value
 	};
 
 	socket.emit('reply-message',data);
