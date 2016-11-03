@@ -8,6 +8,7 @@ module.exports = function(app,io,Event){
 	});
 
 	app.get('/sendagents/:name/:numTickets/:price/:typeEvent/:dateEvent', function(req,res){
+		console.log('entrando');
 		var event = new Event({name:req.params.name, numTickets:req.params.numTickets, price:req.params.price, typeEvent:req.params.typeEvent, dateEvent:req.params.dateEvent});
 		event.save(function(err, event){
 			if(err) return console.error(err);
@@ -16,6 +17,6 @@ module.exports = function(app,io,Event){
 		});
 		var message = 'Evento creado correctamente';
 		res.status(200).send(message);
-		io.sockets.emit('money',event.price);
+		io.sockets.emit('money',event.name);
 	});
 }
