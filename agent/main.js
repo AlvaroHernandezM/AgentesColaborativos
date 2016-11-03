@@ -1,5 +1,6 @@
-var socket = io.connect('http://localhost:8080' ,{'forceNew' : true});
-
+function connectServer(ip) {
+	var socket = io.connect('http://' + ip + ':8080' ,{'forceNew' : true});
+}
 
 //mensajes quele llegan desde el servidor
 socket.on('messages', function(data){
