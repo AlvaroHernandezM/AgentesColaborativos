@@ -1,39 +1,41 @@
 function connectServer(ip) {
 	var socket = io.connect('http://' + ip + ':8080' ,{'forceNew' : true});
+
+		//mensajes quele llegan desde el servidor
+	socket.on('messages', function(data){
+		console.log(data); //consola del navegador
+	})
+
+	socket.on('money', function(data){
+	    console.log(data); //consola del navegador
+	    sendMoney(data,socket); //parm- nombre del evento
+	})
+
+	socket.on('numSales', function(data){
+	    console.log(data); //consola del navegador
+	    sendNumSales(data,socket);
+	})
+
+	socket.on('timeSale', function(data){
+	    console.log(data); //consola del navegador
+	    sendTimeSale(data,socket);
+	})
+
+	socket.on('gain', function(data){
+	    console.log(data); //consola del navegador
+	    sendGain(data,socket);
+	})
+
+	socket.on('typeEvent', function(data){
+	    console.log(data); //consola del navegador
+	    sendTypeEvent(data,socket);
+	})
+
 }
 
-//mensajes quele llegan desde el servidor
-socket.on('messages', function(data){
-	console.log(data); //consola del navegador
-})
-
-socket.on('money', function(data){
-    console.log(data); //consola del navegador
-    sendMoney(data); //parm- nombre del evento
-})
-
-socket.on('numSales', function(data){
-    console.log(data); //consola del navegador
-    sendNumSales(data);
-})
-
-socket.on('timeSale', function(data){
-    console.log(data); //consola del navegador
-    sendTimeSale(data);
-})
-
-socket.on('gain', function(data){
-    console.log(data); //consola del navegador
-    sendGain(data);
-})
-
-socket.on('typeEvent', function(data){
-    console.log(data); //consola del navegador
-    sendTypeEvent(data);
-})
 
 
-function sendMoney(nameEvent) {
+function sendMoney(nameEvent, socket) {
 	var active = dataBase.result;
 	var data = active.transaction(["agent"], "readonly");
 	var object = data.objectStore("agent");
@@ -43,12 +45,12 @@ function sendMoney(nameEvent) {
 
 		if (result !== undefined) {
 			console.log("Enviando money: " + result.money);
-			sendData('money', result.money, nameEvent);
+			sendData('money', result.money, nameEvent, socket);
 		}
 	};
 }
 
-function sendNumSales(nameEvent) {
+function sendNumSales(nameEvent,socket) {
 	var active = dataBase.result;
 	var data = active.transaction(["agent"], "readonly");
 	var object = data.objectStore("agent");
@@ -58,12 +60,12 @@ function sendNumSales(nameEvent) {
 
 		if (result !== undefined) {
 			console.log("Enviando numSales: " + result.numSales);
-			sendData('numSales', result.numSales, nameEvent);
+			sendData('numSales', result.numSales, nameEvent, socket);
 		}
 	};
 }
 
-function sendTimeSale(nameEvent) {
+function sendTimeSale(nameEvent,socket) {
 	var active = dataBase.result;
 	var data = active.transaction(["agent"], "readonly");
 	var object = data.objectStore("agent");
@@ -73,12 +75,12 @@ function sendTimeSale(nameEvent) {
 
 		if (result !== undefined) {
 			console.log("Enviando timeSale: " + result.timeSale);
-			sendData('timeSale', result.timeSale,nameEvent);
+			sendData('timeSale', result.timeSale,nameEvent,socket);
 		}
 	};
 }
 
-function sendGain(nameEvent) {
+function sendGain(nameEvent,socket) {
 	var active = dataBase.result;
 	var data = active.transaction(["agent"], "readonly");
 	var object = data.objectStore("agent");
@@ -88,12 +90,12 @@ function sendGain(nameEvent) {
 
 		if (result !== undefined) {
 			console.log("Enviando gain: " + result.gain);
-			sendData('gain', result.gain,nameEvent);
+			sendData('gain', result.gain,nameEvent,socket);
 		}
 	};
 }
 
-function sendTypeEvent(nameEvent) {
+function sendTypeEvent(nameEvent,socket) {
 	var active = dataBase.result;
 	var data = active.transaction(["agent"], "readonly");
 	var object = data.objectStore("agent");
@@ -103,12 +105,12 @@ function sendTypeEvent(nameEvent) {
 
 		if (result !== undefined) {
 			console.log("Enviando typeEvent: " + result.typeEvent);
-			sendData('typeEvent', result.typeEvent,nameEvent);
+			sendData('typeEvent', result.typeEvent,nameEvent,socket);
 		}
 	};
 }
 
-function sendData(response, value, nameEvent){
+function sendData(response, value, nameEvent, socket){
 	var data = {
 		response:response,
 		value:value,
