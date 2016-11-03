@@ -4,6 +4,7 @@ function connectServer(ip) {
 		//mensajes quele llegan desde el servidor
 	socket.on('messages', function(data){
 		console.log(data); //consola del navegador
+		console.log('hola')
 	})
 
 	socket.on('money', function(data){
@@ -20,7 +21,7 @@ function connectServer(ip) {
 	    console.log(data); //consola del navegador
 	    sendTimeSale(data,socket);
 	})
-
+		
 	socket.on('gain', function(data){
 	    console.log(data); //consola del navegador
 	    sendGain(data,socket);
@@ -30,7 +31,6 @@ function connectServer(ip) {
 	    console.log(data); //consola del navegador
 	    sendTypeEvent(data,socket);
 	})
-
 }
 
 
@@ -120,6 +120,3 @@ function sendData(response, value, nameEvent, socket){
 	socket.emit('reply-message',data);
 	return false;
 }
-
-
-

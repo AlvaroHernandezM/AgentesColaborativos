@@ -67,5 +67,54 @@ function addAgent() {
 	};
 }
 
+//Agregar agente a la coleccion agent
+function addEvent(event) {
+	var active = dataBase.result;
+	var data = active.transaction(['event'], 'readwrite');
+	var object = data.objectStore('event');
+
+	var request = object.put({
+		name: event.name,
+		state: event.state,
+		numTickets: event.numTickets,
+		typeEvent: event.typeEvent,
+		dateEvent: event.dateEvent
+	});
+
+	request.onerror = function (e) {
+		console.log(request.error.name + '\n\n' + request.error.message);
+	};
+
+	data.oncomplete = function (e) {
+		renderEvent();
+		console.log('Evento Asignado');
+	};
+}
+
+function renderEvent() {
+	var active = dataBase.result;
+	var data = active.transaction(["event"], "readonly");
+	var object = data.objectStore("event");
+
+	var elements = [];
+
+	data.oncomplete = function () {
+    var outerHTML = '';
+    for (var key in elements) {
+        outerHTML += '\n\
+                        <tr>\n\
+                            <td>' + elements[key].name + '</td>\n\
+                            <td>' + elements[key].state + '</td>\n\
+                            <td>' + elements[key].numTickets + '</td>\n\
+                            <td>' + elements[key].typeEvent + '</td>\n\
+                            <td>' + elements[key].dateEvent + '</td>\n\
+                        </tr>';
+    }
+
+    elements = [];
+    document.querySelector("#elementsList").innerHTML = outerHTML;
+};
+}
+
 
 
