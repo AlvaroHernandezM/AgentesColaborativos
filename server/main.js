@@ -101,6 +101,12 @@ io.on('connection', function(socket){ //cliente que ha mandado el mensaje
 						  			if(results3.length==1){
 						  				if(results3[0].id == agent.id){
 						  					io.sockets.connected[agent.id].emit('send', event);
+						  					event.state=false;
+						  					event.agent=agent.id;
+						  					event.save(function(err,agent){
+									  			if(err) return console.error(err);
+									  			console.log('Se ha cambiando el estado del evento y se agregado el agente asignado');
+									  		});
 						  					console.log('enviado el eventp '+event.name+' a '+agent.id+' resultado ');
 						  				} else {
 						  					console.log('no hago nada');

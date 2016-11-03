@@ -4,7 +4,7 @@ function connectServer(ip) {
 		//mensajes quele llegan desde el servidor
 	socket.on('messages', function(data){
 		console.log(data); //consola del navegador
-		console.log('hola')
+		addEvent(data);
 	})
 
 	socket.on('money', function(data){
