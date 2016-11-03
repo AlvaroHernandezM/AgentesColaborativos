@@ -1,19 +1,39 @@
 <!DOCTYPE html>  
 <html lang="en">  
 <head>  
-  <meta charset="UTF-8">
-  <title>Aplicación con WebSockets</title>
-  <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
-  <script src="database.js"></script>
-  <script src="main.js"></script>
+	<meta charset="UTF-8">
+	<title>Aplicación con WebSockets</title>
+	<script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+	<script src="database.js"></script>
+	<script src="main.js"></script>
 </head>  
-<body onload="startDB('data');">  
-  <input type="text" id="ip" placeholder="Introducir ip" value="localhost" />
-  <input type="text" id="money" placeholder="Introducir dinero" />
-  <input type="text" id="numSales" placeholder="Introducir numero de ventas" /> 
-  <input type="text" id="timeSale" placeholder="Introducir tiempo de venta" /> 
-  <input type="text" id="gain" placeholder="Introducir ganacia" /> 
-  <input type="text" id="typeEvent" placeholder="Introducir tipo de evento" /> 
-  <button type="button" onclick="addAgent();">Guardar</button>
+<body onload="startDB('data');"> 
+	<input type="text" id="ip" placeholder="Introducir ip" value="localhost" />
+	<input type="text" id="money" placeholder="Introducir dinero" />
+	<input type="text" id="numSales" placeholder="Introducir numero de ventas" /> 
+	<input type="text" id="timeSale" placeholder="Introducir tiempo de venta" /> 
+	<input type="text" id="gain" placeholder="Introducir ganacia" /> 
+	<input type="text" id="typeEvent" placeholder="Introducir tipo de evento" /> 
+	<button type="button" onclick="addAgent();">Guardar</button>
+
+	<div id="elements">
+		<table>
+			<caption>Eventos</caption>
+			<thead>
+				<tr>
+					<th>Nombre</th>
+					<th>Estado</th>
+					<th>Numero de boletas</th>
+					<th>Tipo de evento</th>
+					<th>Tiempo restante para el evento</th>
+				</tr>
+			</thead>
+			<tbody id="elementsList">
+				<tr>
+					<td colspan="5">Not elements to show</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
 </body>  
 </html>  
