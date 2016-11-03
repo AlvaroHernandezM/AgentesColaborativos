@@ -10,7 +10,7 @@ socket.on('welcome', function(data){
 //mensajes quele llegan desde el servidor
 socket.on('money', function(data){
     //console.log(data); //consola del navegador
-    render(data);
+    renderOne(data, 'sendall');
 })
 
 //renderiza varios

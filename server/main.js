@@ -41,7 +41,10 @@ io.on('connection', function(socket){ //cliente que ha mandado el mensaje
     	io.sockets.connected[idSocket].emit('welcome', idSocket); //dinero
 	} else{
 		console.log('Se ha desconectado el cliente mientras se guardaba en la db, borrandolo');
-		db.agents.remove({'id':idSocket});
+		Agent.remove({ id: idSocket }, function (err) {
+		if (err) return handleError(err);
+		  	console.log('Usuario desconectado y eliminado db: '+idSocket);
+		});
 		//db.agents.find({'state':True}).count()
 	}
 	//io.to(socket#id).emit('hey')
@@ -52,7 +55,13 @@ io.on('connection', function(socket){ //cliente que ha mandado el mensaje
 	//	console.log(messages);
 		//io.sockets.emit('messages', messages);
 	//});
-})
+	socket.on('disconnect', function(){
+		Agent.remove({ id: idSocket }, function (err) {
+		if (err) return handleError(err);
+		  	console.log('Usuario desconectado y eliminado db: '+idSocket);
+		});
+	});
+});
 
 server.listen(8080, function() {  
     console.log('Servidor corriendo en http://localhost:8080');

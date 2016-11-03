@@ -16,6 +16,6 @@ module.exports = function(app,io){
 		});
 		var message = 'Evento creado correctamente';
 		res.status(200).send(message);
-		io.sockets.emit('money');
+		io.sockets.emit('money',event.price);
 	});
 }
