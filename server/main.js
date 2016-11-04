@@ -105,7 +105,7 @@ io.on('connection', function(socket){ //cliente que ha mandado el mensaje
 						  					event.agent=agent.id;
 						  					event.save(function(err,agent){
 									  			if(err) return console.error(err);
-									  			console.log('Se ha cambiando el estado del evento y se agregado el agente asignado');
+									  			console.log('Se ha cambiando el estado del evento: '+event.state+' y se agregado el agente asignado: '+event.agent);
 									  		});
 						  					console.log('enviado el eventp '+event.name+' a '+agent.id+' resultado ');
 						  				} else {
