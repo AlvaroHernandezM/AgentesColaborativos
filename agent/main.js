@@ -31,6 +31,7 @@ function connectServer(ip) {
 	    console.log(data); //consola del navegador
 	    sendTypeEvent(data,socket);
 	})
+
 }
 
 

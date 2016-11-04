@@ -98,22 +98,31 @@ function renderEvent() {
 
 	var elements = [];
 
-	data.oncomplete = function () {
-    var outerHTML = '';
-    for (var key in elements) {
-        outerHTML += '\n\
-                        <tr>\n\
-                            <td>' + elements[key].name + '</td>\n\
-                            <td>' + elements[key].state + '</td>\n\
-                            <td>' + elements[key].numTickets + '</td>\n\
-                            <td>' + elements[key].typeEvent + '</td>\n\
-                            <td>' + elements[key].dateEvent + '</td>\n\
-                        </tr>';
-    }
+	object.openCursor().onsuccess = function (e) {
+		var result = e.target.result;
+		if (result === null) {
+			return;
+		}
+		elements.push(result.value);
+		result.continue();
+	};
 
-    elements = [];
-    document.querySelector("#elementsList").innerHTML = outerHTML;
-};
+	data.oncomplete = function () {
+		var outerHTML = '';
+		for (var key in elements) {
+			outerHTML += '\n\
+			<tr>\n\
+			<td>' + elements[key].name + '</td>\n\
+			<td>' + elements[key].state + '</td>\n\
+			<td>' + elements[key].numTickets + '</td>\n\
+			<td>' + elements[key].typeEvent + '</td>\n\
+			<td>' + elements[key].dateEvent + '</td>\n\
+			</tr>';
+		}
+
+		elements = [];
+		document.querySelector("#elementsList").innerHTML = outerHTML;
+	};
 }
 
 
