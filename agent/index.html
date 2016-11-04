@@ -1,39 +1,156 @@
-<!DOCTYPE html>  
-<html lang="en">  
-<head>  
-	<meta charset="UTF-8">
-	<title>Aplicación con WebSockets</title>
+<!DOCTYPE HTML>
+<!--
+	Prologue by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+<head>
+	<title>Venta de Entradas</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+	<link rel="stylesheet" href="assets/css/main.css" />
+	<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
+	<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
 	<script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
 	<script src="database.js"></script>
 	<script src="main.js"></script>
-</head>  
-<body onload="startDB('data');"> 
-	<input type="text" id="ip" placeholder="Introducir ip" value="localhost" />
-	<input type="text" id="money" placeholder="Introducir dinero" />
-	<input type="text" id="numSales" placeholder="Introducir numero de ventas" /> 
-	<input type="text" id="timeSale" placeholder="Introducir tiempo de venta" /> 
-	<input type="text" id="gain" placeholder="Introducir ganacia" /> 
-	<input type="text" id="typeEvent" placeholder="Introducir tipo de evento" /> 
-	<button type="button" onclick="addAgent();">Guardar</button>
+</head>
+<body onload="startDB('data');">
 
-	<div id="elements">
-		<table>
-			<caption>Eventos</caption>
-			<thead>
-				<tr>
-					<th>Nombre</th>
-					<th>Estado</th>
-					<th>Numero de boletas</th>
-					<th>Tipo de evento</th>
-					<th>Tiempo restante para el evento</th>
-				</tr>
-			</thead>
-			<tbody id="elementsList">
-				<tr>
-					<td colspan="5">Not elements to show</td>
-				</tr>
-			</tbody>
-		</table>
+	<!-- Header -->
+	<div id="header">
+
+		<div class="top">
+
+			<!-- Logo -->
+			<div id="logo">
+				<span class="image avatar48"><img src="images/avatar.jpg" alt="" /></span>
+				<h1 id="title">Venta de Entradas</h1>
+				<p>Cliente</p>
+			</div>
+
+			<!-- Nav -->
+			<nav id="nav">
+				<ul>
+					<li><a href="#top" id="top-link" class="skel-layers-ignoreHref"><span class="icon fa-home">Inicio</span></a></li>
+					<li><a href="#about" id="about-link" class="skel-layers-ignoreHref"><span class="icon fa-user">Comprador</span></a></li>
+					<li><a href="#portfolio" id="portfolio-link" class="skel-layers-ignoreHref"><span class="icon fa-th">Oferta de Entradas</span></a></li>
+				</ul>
+			</nav>
+
+		</div>
 	</div>
-</body>  
-</html>  
+
+	<!-- Main -->
+	<div id="main">
+
+		<!-- Intro -->
+		<section id="top" class="one dark cover">
+			<div class="container">
+
+				<header>
+					<h2 class="alt"> <strong> Bienvenido al Sistema Para Venta de Entradas</strong>.</h2>
+					<h2 class="alt"> <strong> tupase.com</strong></h2>
+					<p>En este sitio puedes adquirir entradas para tus eventos favoritos,<br />
+						encontrarás Teatro, deportes, conciertos, festivales, y muchos más.</p>
+
+					</header>
+
+					<footer>
+						<a href="#about" class="button scrolly">Ingresar</a>
+					</footer>
+
+				</div>
+			</section>
+
+			<!-- About Me -->
+			<section id="about" class="three">
+				<div class="container">
+
+					<header>
+						<h2>Comprador.</h2>
+					</header>
+
+					<p>Por favor completa el siguiente formulario:</p>
+
+					<form onsubmit="addAgent();">
+						<center>							
+							<div class="6u$ 12u$(mobile)"><input type="text" id="ip" placeholder="IP servidor" /></div>
+							<div class="6u$ 12u$(mobile)"><input type="text" id="money" placeholder="Cantidad de Dinero Disponible" /></div>
+							<div class="6u$ 12u$(mobile)"><input type="text" id="numSales" placeholder="Número de Ventas" /></div>
+							<div class="6u$ 12u$(mobile)"><input type="text" id="timeSale" placeholder="Tiempo de Venta" /></div>
+							<div class="6u$ 12u$(mobile)"><input type="text" id="gain" placeholder="Ganancia" /></div>
+							<div class="6u$ 12u$(mobile)"><input type="text" id="typeEvent" placeholder="Tipo evento" /></div>
+							<br>
+							<div class="12u$">
+								<input type="submit" value="Enviar" />
+							</div>
+						</center>
+					</form>
+
+
+				</div>
+			</section>
+
+			<!-- Portfolio -->
+			<section id="portfolio" class="two">
+				<div class="container">
+
+					<header>
+						<h2>Oferta De Entradas.</h2>
+					</header>
+
+					<p>Acá encontrarás los eventos que se encuentran disponibles.</p>
+
+					<div class="">
+						<div class="">
+							<table>
+								<caption><strong>Eventos</strong></caption>
+								<thead>
+									<tr>
+										<th>Nombre</th>
+										<th>Estado</th>
+										<th>Numero de boletas</th>
+										<th>Tipo de evento</th>
+										<th>Tiempo restante para el evento</th>
+									</tr>
+								</thead>
+								<tbody id="elementsList">
+									<tr>
+										<td colspan="5">Not elements to show</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+
+				</div>
+			</section>
+
+
+
+		</div>
+
+		<!-- Footer -->
+		<div id="footer">
+
+			<!-- Copyright -->
+			<ul class="copyright">
+				<li>&copy; Inteligencia Artificial.</li><li>Alvaro Hernandez - Larry Portocarrero - Katherine Velandia</li>
+			</ul>
+
+		</div>
+
+		<!-- Scripts -->
+		<script src="assets/js/jquery.min.js"></script>
+		<script src="assets/js/jquery.scrolly.min.js"></script>
+		<script src="assets/js/jquery.scrollzer.min.js"></script>
+		<script src="assets/js/skel.min.js"></script>
+		<script src="assets/js/util.js"></script>
+		<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+		<script src="assets/js/main.js"></script>
+
+	</body>
+	</html>
