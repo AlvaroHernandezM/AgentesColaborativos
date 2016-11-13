@@ -63,7 +63,7 @@ io.on('connection', function(socket){ //cliente que ha mandado el mensaje
 			Agent.findOne({ id: idSocket }, function (err, agent){
 				if(err) return console.error(err);
 				agent.money = data.value;
-				agent.request = 'money';
+				
 				agent.save(function(err, agent){
 					if(err) return console.error(err);
 					console.log('Se ha actualizado agente con money: '+agent.money);
@@ -83,7 +83,7 @@ io.on('connection', function(socket){ //cliente que ha mandado el mensaje
 			  			console.log('Se ha cambiando el estado del agente a '+agent.state+' y el reqiest  '+agent.request);
 			  		});			  		
 			  	}
-
+			  	agent.request = 'money';
 			  	compareMoney(Agent,event,io,agent);			
 
 			  });
@@ -99,24 +99,31 @@ io.on('connection', function(socket){ //cliente que ha mandado el mensaje
 					console.log('Se ha actualizado agente con numSales: '+agent.numSales);
 				});
 				console.log('Que postula al evento: '+data.nameEvent);
-				Event.findOne({ name: data.nameEvent }, function (err, event){ //obteniendo evento
-			  	if(event.typeEvent==agent.typeEvent){ //comparando los precios
-					agent.state = true;  //cambiando el estado del agente (verificar problemas futuros)
-					agent.save(function(err,agent){
-						if(err) return console.error(err);
-						console.log('Se ha cambiando el estado del agente a '+agent.state+' porque coincide el tipo de evento: '+event.typeEvent);
-					});
-				} else {
-					agent.state=false;
-					agent.save(function(err,agent){
-						if(err) return console.error(err);
-						console.log('Se ha cambiando el estado del agente a '+agent.state+' porque no coincide con el tipo');
-					});			  		
-				}
+				Agent.find({state:true}).exec(function(err, result4){
+					if(err) return console.error(err);
+					console.log('numSales.length ** '+result4.length);
+					console.log(result4);
+					var agentsNumSales = result4;
+					
+				});	
+				//Event.findOne({ name: data.nameEvent }, function (err, event){ //obteniendo evento
+			  	//if(event.typeEvent==agent.typeEvent){ //comparando los precios
+				//	agent.state = true;  //cambiando el estado del agente (verificar problemas futuros)
+				//	agent.save(function(err,agent){
+				//		if(err) return console.error(err);
+				//		console.log('Se ha cambiando el estado del agente a '+agent.state+' porque coincide el tipo de evento: '+event.typeEvent);
+				//	});
+				//} else {
+				//	agent.state=false;
+				//	agent.save(function(err,agent){
+				//		if(err) return console.error(err);
+				//		console.log('Se ha cambiando el estado del agente a '+agent.state+' porque no coincide con el tipo');
+				//	});			  		
+				//}
 
-				compareEvent(Agent,event,io,agent);			
+				//compareEvent(Agent,event,io,agent);			
 
-				});
+				//});
 			});
 		} else if(data.response=='timeSale') {
 			console.log('Es sobre timeSale: '+data.value);
@@ -144,7 +151,6 @@ io.on('connection', function(socket){ //cliente que ha mandado el mensaje
 			console.log('Es sobre typeEvent: '+data.value);
 			Agent.findOne({ id: idSocket }, function (err, agent){
 				agent.typeEvent = data.value;
-				agent.request = 'typeEvent';
 				agent.save(function(err, agent){
 					if(err) return console.error(err);
 					console.log('Se ha actualizado agente con typeEvent: '+agent.typeEvent);
@@ -169,7 +175,7 @@ io.on('connection', function(socket){ //cliente que ha mandado el mensaje
 							console.log('Se ha cambiando el estado del agente a '+agent.state+' porque no coincide con el tipo');
 						});			  		
 					}
-
+					agent.request = 'typeEvent';
 					compareEvent(Agent,event,io,agent,agentsEvent);			
 
 					});
@@ -230,9 +236,7 @@ function compareMoney(Agent,event,io,agent){
 							console.log('no hago nada');
 						}						  				
 					} else if(results3.length==0){
-						setTimeout(function(){
-							io.sockets.emit('money',event.name);						  					
-						}, 5000);
+						io.sockets.connected[agent.id].emit('money',event.name);
 					} else {
 						if(agent.state == true){
 							console.log('continuando con pregunta tipo evento para el resto');

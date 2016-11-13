@@ -102,7 +102,44 @@
 
 					<p>Por favor completa el siguiente formulario:</p>
 
-					<form id = "submit">
+					<!-- <form>-->
+							<center>
+								<div class="6u$ 12u$(mobile)"><input id="name" type="text" name="name" placeholder="Nombre" /></div>
+									<div class="6u$ 12u$(mobile)"><input id="numTickets" type="text" placeholder="Número de boletas" /></div>
+									<div class="6u$ 12u$(mobile)"><input id="price" type="text" placeholder="Valor de boletas" /></div>
+									<div class="6u$ 12u$(mobile)"><input id="typeEvent" type="text" placeholder="Tipo" /></div>
+									<div class="6u$ 12u$(mobile)"><input id="dateEvent" type="text" placeholder="Tiempo restante para comenzar" /></div>
+									<br>
+									<div class="12u$">
+										<input id="submit" type="submit" value="AGREGAR EVENTO" />
+									</div>
+								</div>
+								<div class="row">
+									<div class="12u$">
+										<h5><div id="result"></div></h5>
+									</div>
+								</div>
+						<!--	</form>-->
+								 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+								  <script type="text/javascript">
+								    $(function() {
+								      $('#submit').click(function() {
+								        $.ajax({
+								          url: '/sendagents/' + $('#name').val() + '/'+ $('#numTickets').val() + '/'+ $('#price').val() + '/'+ $('#typeEvent').val() + '/'+ $('#dateEvent').val()
+								        }).done(function( data ) {
+										      $('#result').text(data);
+								        }).fail( function( jqXHR, textStatus, errorThrown ) {
+								            alert('Error enviando: '+ jqXHR+" - "+textStatus+" - "+errorThrown);
+								        });
+								      });
+								    });
+								</script>
+							</center>
+
+
+		</div>
+<!--
+		<form id = "submit">
 						<center>
 							<div class="6u$ 12u$(mobile)"><input id="name" type="text" name="name" placeholder="Nombre" /></div>
 							<div class="6u$ 12u$(mobile)"><input id="numTickets" type="text" placeholder="Número de boletas" /></div>
@@ -137,7 +174,7 @@
 				</center>
 
 
-			</div>
+			</div>  -->
 		</section>	
 	</div>
 
