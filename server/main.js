@@ -125,29 +125,7 @@ io.on('connection', function(socket){ //cliente que ha mandado el mensaje
 
 				//});
 			});
-		} else if(data.response=='timeSale') {
-			console.log('Es sobre timeSale: '+data.value);
-			Agent.findOne({ id: idSocket }, function (err, agent){
-				agent.timeSale = data.value;
-				agent.request = 'timeSale';
-				agent.save(function(err, agent){
-					if(err) return console.error(err);
-					console.log('Se ha actualizado agente con timeSale: '+agent.timeSale);
-				});
-				console.log('Que postula al evento: '+data.nameEvent);
-			});
-		} else if(data.response=='gain') {
-			console.log('Es sobre gain: '+data.value);
-			Agent.findOne({ id: idSocket }, function (err, agent){
-				agent.gain = data.value;
-				agent.request = 'gain';
-				agent.save(function(err, agent){
-					if(err) return console.error(err);
-					console.log('Se ha actualizado agente con gain: '+agent.gain);
-				});
-				console.log('Que postula al evento: '+data.nameEvent);
-			});
-		} else if(data.response=='typeEvent') {
+		}  else if(data.response=='typeEvent') {
 			console.log('Es sobre typeEvent: '+data.value);
 			Agent.findOne({ id: idSocket }, function (err, agent){
 				agent.typeEvent = data.value;
