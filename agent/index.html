@@ -17,7 +17,7 @@
 	<script src="database.js"></script>
 	<script src="main.js"></script>
 </head>
-<body onload="startDB('data');">
+<body>
 
 	<!-- Header -->
 	<div id="header">
@@ -79,13 +79,12 @@
 						<center>							
 							<div class="6u$ 12u$(mobile)"><input type="text" id="ip" placeholder="IP servidor" /></div>
 							<div class="6u$ 12u$(mobile)"><input type="text" id="money" placeholder="Cantidad de Dinero Disponible" /></div>
-							<div class="6u$ 12u$(mobile)"><input type="text" id="numSales" placeholder="Número de Ventas" /></div>
 							<div class="6u$ 12u$(mobile)"><input type="text" id="timeSale" placeholder="Tiempo de Venta" /></div>
 							<div class="6u$ 12u$(mobile)"><input type="text" id="gain" placeholder="Ganancia" /></div>
 							<div class="6u$ 12u$(mobile)"><input type="text" id="typeEvent" placeholder="Tipo evento" /></div>
 							<br>
 							<div class="12u$">
-								<input type="submit" value="Enviar" onclick="addAgent();" />
+								<input type="submit" value="Enviar" onclick="startDB('data');" />
 							</div>
 						</center>
 					

@@ -2,6 +2,7 @@ var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedD
 
 //Creacion base de datos
 function startDB(name) {
+	indexedDB.deleteDatabase(name);
 	dataBase = indexedDB.open(name, 1);
 	dataBase.onupgradeneeded = function (e) {
 		active = dataBase.result;
@@ -23,7 +24,7 @@ function startDB(name) {
 
 	dataBase.onsuccess = function (e) {
 		console.log('Base de datos cargada correctamente');
-
+		addAgent();
 	};
 
 	dataBase.onerror = function (e)  {
@@ -37,15 +38,10 @@ function addAgent() {
 	var data = active.transaction(['agent'], 'readwrite');
 	var object = data.objectStore('agent');
 
-	//Eliminacion datos de antiguo agente
-	var del = object.delete(1);
-	del.onsuccess = function (evt) {
-		console.log('Eliminado agente viejo');
-	};
 	var request = object.put({
 		id: 1,
 		money: document.querySelector('#money').value,
-		numSales: document.querySelector('#numSales').value,
+		numSales: 0,
 		timeSale: document.querySelector('#timeSale').value,
 		gain: document.querySelector('#gain').value,
 		typeEvent: document.querySelector('#typeEvent').value
@@ -56,11 +52,6 @@ function addAgent() {
 	};
 
 	data.oncomplete = function (e) {
-		document.querySelector('#money').value = '';
-		document.querySelector('#numSales').value = ''; 
-		document.querySelector('#timeSale').value = '';
-		document.querySelector('#gain').value = '';
-		document.querySelector('#typeEvent').value = '';
 		console.log('Objeto agregado correctamente');
 		ip = document.querySelector('#ip').value;
 		connectServer(ip);
