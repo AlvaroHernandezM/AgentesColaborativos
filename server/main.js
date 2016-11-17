@@ -254,13 +254,13 @@ function iterarEvent(Agent,event,io,agent,agentsEvent){
 			console.log('ninguno cumple la condición del evento, se asginara el amenor')
 			Agent.find({}).exec(function (err, agents) {
 				if(err) throw err;
-				min=1000;
+				min=893912121218;
 				id=-1;
 				idMin=-1;
 				agents.forEach(function(agent){
 					id+=1;
-					if(agent.numSales<min && agent.request=='typeEvent'){
-						min = agent.numSales;
+					if(agent.money<min && agent.request=='typeEvent'){
+						min = agent.money;
 						idMin=id;
 					}
 				});
