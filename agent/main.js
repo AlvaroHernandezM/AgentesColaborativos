@@ -123,16 +123,3 @@ function connectServer(ip) {
 		socket.emit('reply-message',data);
 		return false;
 	}
-
-
-function WriteToFile() {
-
-    set fso = CreateObject("Scripting.FileSystemObject");  
-    set s = fso.CreateTextFile("log.txt", True);
-    s.writeline("HI");
-    s.writeline("Bye");
-    s.writeline("-----------------------------");
-    s.Close();
- }
-
-WriteToFile();
