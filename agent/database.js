@@ -210,7 +210,7 @@ function startSale(event) {
 		var request = object.put({
 			id: agent[0].id,
 			money: agent[0].money,
-			numSales: agent[0].numSales++,
+			numSales: agent[0].numSales + 1,
 			timeSale: agent[0].timeSale,
 			gain: agent[0].gain,
 			typeEvent: agent[0].typeEvent
