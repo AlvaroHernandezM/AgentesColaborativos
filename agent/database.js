@@ -55,6 +55,11 @@ function addAgent() {
 
 	data.oncomplete = function (e) {
 		console.log('Agente almacenado correctamente');
+		document.querySelector('#ip').readOnly = true;
+		document.querySelector('#money').readOnly = true;
+		document.querySelector('#timeSale').readOnly = true;
+		document.querySelector('#gain').readOnly = true;
+		document.querySelector('#typeEvent').readOnly = true;
 		ip = document.querySelector('#ip').value;
 		connectServer(ip);
 	};
@@ -183,6 +188,7 @@ function setMoney(event, mode) {
 
 		data.oncomplete = function (e) {
 			console.log('Nuevo dinero: ' + newMoney);
+			document.querySelector('#money').value = newMoney;
 			if (mode) {
 				setTimeout(function() {
 					setMoney(event, false);
@@ -222,6 +228,7 @@ function startSale(event) {
 
 		data.oncomplete = function (e) {
 			console.log('Nuevo numero de ventas: ' + agent[0].numSales++);
+			document.querySelector('#numSales').value = agent[0].numSales++;
 			setMoney(event, true);
 		};
 	};

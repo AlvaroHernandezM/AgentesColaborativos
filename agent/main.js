@@ -10,27 +10,27 @@ function connectServer(ip) {
 	})
 
 		socket.on('money', function(data){
-	    console.log(data); //consola del navegador
+	    console.log('Nueva peticion para el  evento: ' + data); //consola del navegador
 	    sendMoney(data,socket); //parm- nombre del evento
 	})
 
 		socket.on('numSales', function(data){
-	    console.log(data); //consola del navegador
+	    console.log('Nueva peticion para el  evento: ' + data); //consola del navegador
 	    sendNumSales(data,socket);
 	})
 
 		socket.on('timeSale', function(data){
-	    console.log(data); //consola del navegador
+	    console.log('Nueva peticion para el  evento: ' + data); //consola del navegador
 	    sendTimeSale(data,socket);
 	})
 		
 		socket.on('gain', function(data){
-	    console.log(data); //consola del navegador
+	    console.log('Nueva peticion para el  evento: ' + data); //consola del navegador
 	    sendGain(data,socket);
 	})
 
 		socket.on('typeEvent', function(data){
-	    console.log(data); //consola del navegador
+	    console.log('Nueva peticion para el  evento: ' + data); //consola del navegador
 	    sendTypeEvent(data,socket);
 	})
 
