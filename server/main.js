@@ -190,7 +190,7 @@ function iterateMoney(Agent,event,io,agent){
 			io.sockets.connected[agent.id].emit('messages', event);
 			event.state=false;
 			event.agent=agent.id;
-			event.save(function(err,agent){
+			event.save(function(err,event){
 				if(err) return console.error(err);
 				console.log('Se ha cambiando el estado del evento: '+event.state+' y se agregado el agente asignado: '+event.agent);
 			});
@@ -199,7 +199,13 @@ function iterateMoney(Agent,event,io,agent){
 			console.log('no hago nada');
 		}						  				
 	} else if(results3.length==0){
-		io.sockets.connected[agent.id].emit('numSales',event.name);
+		if(event.dateEvent>0){
+			setTimeout(function() {
+				io.sockets.connected[agent.id].emit('numSales',event.name);
+			}, 1000);
+		} else {
+			console.log('se le ha acabado el tiempo al evento, ese evento no deberia existir')
+		}
 	} else if (agent.state == true){
 		console.log('continuando con pregunta tipo evento para '+agent.id);
 		io.sockets.connected[agent.id].emit('typeEvent', event.name);
@@ -245,7 +251,32 @@ function iterarEvent(Agent,event,io,agent,agentsEvent){
 				//for (var aux in agentsEvent){
 				//	io.sockets.connected[aux.id].emit('typeEvent', event.name);
 				//}
-			console.log('ninguno cumple la condición del evento, pendiente lo que continua')
+			console.log('ninguno cumple la condición del evento, se asginara el amenor')
+			Agent.find({}).exec(function (err, agents) {
+				if(err) throw err;
+				min=1000;
+				id=-1;
+				idMin=-1;
+				agents.forEach(function(agent){
+					id+=1;
+					if(agent.numSales<min){
+						min = agent.numSales;
+						idMin=id;
+					}
+				});
+				if(agents[idMin].id == agent.id){
+					io.sockets.connected[agent.id].emit('messages', event);
+					event.state=false;
+					event.agent=agent.id;
+					event.save(function(err,agent){
+					if(err) return console.error(err);
+					console.log('Se ha cambiando el estado del evento: '+event.state+' y se agregado el agente asignado: '+event.agent);
+					});
+					console.log('enviado el eventp '+event.name+' a '+agent.id+' ya que es el que menos numero de vetas tiene ');
+				} else {
+					console.log('no hago nada')
+				}				
+			});
 		} else if(agent.state == true){
 			console.log('continuando con pregunta numero ventas para el resto');
 			io.sockets.connected[agent.id].emit('numSales', event.name);
