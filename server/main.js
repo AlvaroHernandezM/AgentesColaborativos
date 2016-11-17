@@ -259,7 +259,7 @@ function iterarEvent(Agent,event,io,agent,agentsEvent){
 				idMin=-1;
 				agents.forEach(function(agent){
 					id+=1;
-					if(agent.numSales<min){
+					if(agent.numSales<min && agent.request=='typeEvent'){
 						min = agent.numSales;
 						idMin=id;
 					}
