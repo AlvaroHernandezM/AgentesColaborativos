@@ -199,7 +199,7 @@ function iterateMoney(Agent,event,io,agent){
 			console.log('no hago nada');
 		}						  				
 	} else if(results3.length==0){
-		io.sockets.connected[agent.id].emit('money',event.name);
+		io.sockets.connected[agent.id].emit('numSales',event.name);
 	} else if (agent.state == true){
 		console.log('continuando con pregunta tipo evento para '+agent.id);
 		io.sockets.connected[agent.id].emit('typeEvent', event.name);
