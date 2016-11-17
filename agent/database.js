@@ -162,11 +162,11 @@ function setMoney(event, mode) {
 
 		if (mode) { //Compra  - 
 			console.log('Vendiendo boletas del evento "' + event.name + '".');
-			newMoney = agent[0].money - event.price;
+			newMoney = agent[0].money - (event.price*event.numTickets);
 		}else{ // Ganacia + 
 			console.log('Boletas del evento "' + event.name + '" vendidas con exito.');
 			refreshEvent(event);
-			newMoney = agent[0].money + event.price + ((agent[0].gain * event.price)/100);
+			newMoney = agent[0].money + (event.price*event.numTickets) + ((agent[0].gain *(event.price*event.numTickets))/100);
 		}
 
 		var request = object.put({
