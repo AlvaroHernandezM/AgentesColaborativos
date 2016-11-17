@@ -62,15 +62,14 @@ io.on('connection', function(socket){ //cliente que ha mandado el mensaje
 			console.log('Es sobre dinero: '+data.value);
 			Agent.findOne({ id: idSocket }, function (err, agent){
 				if(err) return console.error(err);
-				agent.money = data.value;
-				
+				agent.money = data.value;				
 				agent.save(function(err, agent){
 					if(err) return console.error(err);
 					console.log('Se ha actualizado agente con money: '+agent.money);
 				});
 				console.log('Que postula al evento: '+data.nameEvent);
 			  Event.findOne({ name: data.nameEvent }, function (err, event){ //obteniendo evento
-			  	if(event.price>agent.money){ //comparando los precios
+			  	if((event.price*event.numTickets)>agent.money){ //comparando los precios
 			  		agent.state = false;  //cambiando el estado del agente (verificar problemas futuros)
 			  		agent.save(function(err,agent){
 			  			if(err) return console.error(err);
@@ -80,7 +79,7 @@ io.on('connection', function(socket){ //cliente que ha mandado el mensaje
 			  		agent.state=true;
 			  		agent.save(function(err,agent){
 			  			if(err) return console.error(err);
-			  			console.log('Se ha cambiando el estado del agente a '+agent.state+' y el reqiest  '+agent.request);
+			  			console.log('Se ha cambiando el estado del agente a '+agent.state);
 			  		});			  		
 			  	}
 			  	agent.request = 'money';
@@ -98,32 +97,8 @@ io.on('connection', function(socket){ //cliente que ha mandado el mensaje
 					if(err) return console.error(err);
 					console.log('Se ha actualizado agente con numSales: '+agent.numSales);
 				});
-				console.log('Que postula al evento: '+data.nameEvent);
-				Agent.find({state:true}).exec(function(err, result4){
-					if(err) return console.error(err);
-					console.log('numSales.length ** '+result4.length);
-					console.log(result4);
-					var agentsNumSales = result4;
-					
-				});	
-				//Event.findOne({ name: data.nameEvent }, function (err, event){ //obteniendo evento
-			  	//if(event.typeEvent==agent.typeEvent){ //comparando los precios
-				//	agent.state = true;  //cambiando el estado del agente (verificar problemas futuros)
-				//	agent.save(function(err,agent){
-				//		if(err) return console.error(err);
-				//		console.log('Se ha cambiando el estado del agente a '+agent.state+' porque coincide el tipo de evento: '+event.typeEvent);
-				//	});
-				//} else {
-				//	agent.state=false;
-				//	agent.save(function(err,agent){
-				//		if(err) return console.error(err);
-				//		console.log('Se ha cambiando el estado del agente a '+agent.state+' porque no coincide con el tipo');
-				//	});			  		
-				//}
-
-				//compareEvent(Agent,event,io,agent);			
-
-				//});
+				io.sockets.connected[idSocket].emit('money',data.nameEvent);
+				console.log('peticion dinero enviado correctamente')
 			});
 		}  else if(data.response=='typeEvent') {
 			console.log('Es sobre typeEvent: '+data.value);
@@ -196,37 +171,39 @@ function compareMoney(Agent,event,io,agent){
 			console.log("todos "+results1.length);
 			countAgents = results1.length;
 			if(countAgents==countRequestMoney){
-				console.log('ULTIMO');
-				Agent.find({state:true}).exec(function (err, results3) {
-					if(err) return console.error(err);
-					console.log("stado final "+results3.length);
-					if(results3.length==1){
-						if(results3[0].id == agent.id){
-							io.sockets.connected[agent.id].emit('messages', event);
-							event.state=false;
-							event.agent=agent.id;
-							event.save(function(err,agent){
-								if(err) return console.error(err);
-								console.log('Se ha cambiando el estado del evento: '+event.state+' y se agregado el agente asignado: '+event.agent);
-							});
-							console.log('enviado el eventp '+event.name+' a '+agent.id+' resultado ');
-						} else {
-							console.log('no hago nada');
-						}						  				
-					} else if(results3.length==0){
-						io.sockets.connected[agent.id].emit('money',event.name);
-					} else {
-						if(agent.state == true){
-							console.log('continuando con pregunta tipo evento para el resto');
-							io.sockets.connected[agent.id].emit('typeEvent', event.name);
-						}
-					}
-				});
+				iterateMoney(Agent,event,io,agent);
 			} else {
 				console.log('recursivo');
 				compareMoney(Agent,event,io,agent);
 			}
 		});
+	});
+}
+
+function iterateMoney(Agent,event,io,agent){
+	console.log('ULTIMO');
+	Agent.find({state:true}).exec(function (err, results3) {
+	if(err) return console.error(err);
+	console.log("stado final "+results3.length);
+	if(results3.length==1){
+		if(results3[0].id == agent.id){
+			io.sockets.connected[agent.id].emit('messages', event);
+			event.state=false;
+			event.agent=agent.id;
+			event.save(function(err,agent){
+				if(err) return console.error(err);
+				console.log('Se ha cambiando el estado del evento: '+event.state+' y se agregado el agente asignado: '+event.agent);
+			});
+			console.log('enviado el eventp '+event.name+' a '+agent.id+' resultado ');
+		} else {
+			console.log('no hago nada');
+		}						  				
+	} else if(results3.length==0){
+		io.sockets.connected[agent.id].emit('money',event.name);
+	} else if (agent.state == true){
+		console.log('continuando con pregunta tipo evento para '+agent.id);
+		io.sockets.connected[agent.id].emit('typeEvent', event.name);
+	}
 	});
 }
 
@@ -237,39 +214,41 @@ function compareEvent(Agent,event,io,agent,agentsEvent){
 		console.log("typeEvent "+results.length);
 		countRequestEvent = results.length;
 		if(agentsEvent.length==countRequestEvent){
-			console.log('YA TODOS PASARON');
-			Agent.find({state:true}).exec(function (err, results3) {
-				if(err) return console.error(err);
-				console.log("stado final "+results3.length);
-				if(results3.length==1){
-					if(results3[0].id == agent.id){
-						io.sockets.connected[agent.id].emit('messages', event);
-						event.state=false;
-						event.agent=agent.id;
-						event.save(function(err,agent){
-							if(err) return console.error(err);
-							console.log('Se ha cambiando el estado del evento: '+event.state+' y se agregado el agente asignado: '+event.agent);
-						});
-						console.log('enviado el eventp '+event.name+' a '+agent.id+' resultado ');
-					} else {
-						console.log('no hago nada');
-					}						  				
-				} else if(results3.length==0){
-						//se debe ver con que agentes se tiene estado de true anteriormente
-						//for (var aux in agentsEvent){
-						//	io.sockets.connected[aux.id].emit('typeEvent', event.name);
-						//}
-						console.log('ninguno cumple la condición del evento, pendiente lo que continua')
-					} else {
-						if(agent.state == true){
-							console.log('continuando con pregunta numero ventas para el resto');
-							io.sockets.connected[agent.id].emit('numSales', event.name);
-						}
-					}
-				});
+			iterarEvent(Agent,event,io,agent,agentsEvent);
 		} else {
 			console.log('recursivo');
 			compareEvent(Agent,event,io,agent,agentsEvent);
+		}
+	});
+}
+
+function iterarEvent(Agent,event,io,agent,agentsEvent){
+	console.log('YA TODOS PASARON');
+	Agent.find({state:true}).exec(function (err, results3) {
+		if(err) return console.error(err);
+		console.log("stado final "+results3.length);
+		if(results3.length==1){
+			if(results3[0].id == agent.id){
+				io.sockets.connected[agent.id].emit('messages', event);
+				event.state=false;
+				event.agent=agent.id;
+				event.save(function(err,agent){
+				if(err) return console.error(err);
+				console.log('Se ha cambiando el estado del evento: '+event.state+' y se agregado el agente asignado: '+event.agent);
+				});
+				console.log('enviado el eventp '+event.name+' a '+agent.id+' resultado ');
+			} else {
+				console.log('no hago nada');
+			}						  				
+		} else if(results3.length==0){
+				//se debe ver con que agentes se tiene estado de true anteriormente
+				//for (var aux in agentsEvent){
+				//	io.sockets.connected[aux.id].emit('typeEvent', event.name);
+				//}
+			console.log('ninguno cumple la condición del evento, pendiente lo que continua')
+		} else if(agent.state == true){
+			console.log('continuando con pregunta numero ventas para el resto');
+			io.sockets.connected[agent.id].emit('numSales', event.name);
 		}
 	});
 }
