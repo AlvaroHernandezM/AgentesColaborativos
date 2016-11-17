@@ -8,7 +8,7 @@ var eventSchema = mongoose.Schema({
 	price: Number,
 	typeEvent: String,
 	dateEvent: Number,
-	agent: String
+	agent: {type:String,default:'None'}
 });
 //Export the schema
 module.exports = mongoose.model('Event', eventSchema);

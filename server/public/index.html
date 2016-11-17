@@ -72,21 +72,27 @@
 
 					<p>Acá encontrarás los eventos que se encuentran disponibles.</p>
 
-					<div class="row">
-						<div class="4u 12u$(mobile)">
-							<article class="item">
-								<a href="#" class="image fit"><img src="images/pic02.jpg" alt="" /></a>
-								<header>
-									<h3>Ipsum Feugiat</h3>
-								</header>
-							</article>
-							<article class="item">
-								<a href="#" class="image fit"><img src="images/pic03.jpg" alt="" /></a>
-								<header>
-									<h3>Rhoncus Semper</h3>
-								</header>
-							</article>
-						</div>								
+					<div class="">
+						<div class="">
+							<table>
+								<caption><strong>Eventos</strong></caption>
+								<thead>
+									<tr>
+										<th>Nombre</th>
+										<th>Estado</th>
+										<th>Numero de boletas</th>
+										<th>Tipo de evento</th>
+										<th>Precio</th>
+										<th>Agente</th>
+									</tr>
+								</thead>
+								<tbody id="elementsList">
+									<tr>
+										<td colspan="6">Sin eventos creados aún</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
 					</div>
 
 				</div>
@@ -133,6 +139,25 @@
 								        });
 								      });
 								    });
+								</script>
+								<script type="text/javascript">
+								    function eventsRender() {
+								      var outerHTML = '';
+								      var elements = [];
+								      var events = actualiceEvents();
+								      events.forEach(function(event){
+											outerHTML += '\n\
+											<tr>\n\
+											<td>' + event.name + '</td>\n\
+											<td>' + event.state + '</td>\n\
+											<td>' + event.numTickets + '</td>\n\
+											<td>' + event.typeEvent + '</td>\n\
+											<td>' + event.price + '</td>\n\
+											<td>' + event.agent + '</td>\n\
+											</tr>';
+										});
+								      document.querySelector("#elementsList").innerHTML = outerHTML;
+								    }
 								</script>
 							</center>
 
